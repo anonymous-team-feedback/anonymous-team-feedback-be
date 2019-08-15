@@ -1,0 +1,11 @@
+.env
+
+/node_modules
+
+.vscode
+logfile.logfile
+uncaughtExceptions.log
+
+// Error logs
+errors.log
+logfile.log

@@ -1,0 +1,35 @@
+{
+  "name": "anonymous-team-feedback-BE",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anonymous-team-feedback/anonymous-team-feedback-BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anonymous-team-feedback/anonymous-team-feedback-BE/issues"
+  },
+  "homepage": "https://github.com/anonymous-team-feedback/anonymous-team-feedback-BE#readme",
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "fawn": "^2.1.5",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "mongoose": "^5.6.9",
+    "winston": "^3.2.1",
+    "winston-mongo": "^1.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
