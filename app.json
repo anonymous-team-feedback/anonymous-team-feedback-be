@@ -1,0 +1,19 @@
+{
+  "addons": [
+    "mongolab"
+  ],
+  "buildpacks": [
+
+  ],
+  "env": {
+    "MONGODB_URI": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "name": "anonymous-team-feedback-be",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
