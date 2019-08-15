@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const winston = require('winston')
 
-const databaseUrl = process.env.DATABASE_URL || 'mongodb://localhost/anonteamfeedback'
+const databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/anonteamfeedback'
 module.exports = function() {
     mongoose.connect(databaseUrl,  { useNewUrlParser: true })
     .then(() => winston.info('Connected to MongoDB'))
