@@ -2,9 +2,6 @@ const winston = require('winston');
 require('winston-mongo');
 require('express-async-errors');
 
-const databaseUrl =
-  process.env.DATABASE_URL || 'mongodb://localhost/anonteamfeedback';
-
 module.exports = function() {
   winston.exceptions.handle(
     new winston.transports.File({ filename: './logs/errors.log' })
