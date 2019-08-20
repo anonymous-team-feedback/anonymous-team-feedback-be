@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch --verbose",
     "nodemon": "nodemon index.js",
     "start": "node index.js"
   },
@@ -19,6 +19,9 @@
     "url": "https://github.com/anonymous-team-feedback/anonymous-team-feedback-BE/issues"
   },
   "homepage": "https://github.com/anonymous-team-feedback/anonymous-team-feedback-BE#readme",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
@@ -34,6 +37,7 @@
   },
   "devDependencies": {
     "jest": "^24.8.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }

@@ -12,5 +12,7 @@ require('./startup/logging')()
 require('./startup/routes')(server);
 require('./startup/db')();
 
+module.exports = server;
+
 const port = process.env.PORT || 5050;
-server.listen(port, () => winston.info(`Lisining on port ${port}`));
+server.listen(port, () => winston.info(`Listening on port ${port}`));
