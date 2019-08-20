@@ -32,7 +32,7 @@ router.post("/register", async (req, res) => {
 
   // Send response and token
   res.header("x-auth-token", token).json({
-    user: user.name,
+    name: user.name,
     email: user.email,
     _id: user._id
   });
@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
 
   // Send response and token
   res.header("x-auth-token", token).json({
-    user: user.name,
+    name: user.name,
     email: user.email,
     _id: user._id
   });
