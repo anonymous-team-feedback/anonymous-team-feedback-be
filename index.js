@@ -8,9 +8,9 @@ const helmet = require('helmet')
 server.use(helmet())
 server.use(cors())
 
-//require('./startup/logging')()
-//require('./startup/routes')(server);
-//require('./startup/db')();
+require('./startup/logging')()
+require('./startup/routes')(server);
+require('./startup/db')();
 
 module.exports = server;
 
