@@ -37,18 +37,19 @@ router.post("/register", async (req, res) => {
   });
 });
 
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   // Validates request body
-  const { error } = validate(req.body)
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   // Locate user in database
-  let user = await User.findOne({ email: req.body.email })
-  if (!user) return res.status(400).json({ message: 'Invalid email or password' })
+  let user = await User.findOne({ email: req.body.email });
+  if (!user)
+    return res.status(400).json({ message: "Invalid email or password" });
 
   // Check if password is valid
-  const validPassword = await bcrypt.compare(req.body.password, user.password)
-  if (!validPassword) return res.status(400).send('Invalid email or password.');
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!validPassword) return res.status(400).send("Invalid email or password.");
 
   // Create token
   const token = user.generateAuthToken();
@@ -59,7 +60,6 @@ router.post('/login', async (req, res) => {
     email: user.email,
     _id: user._id
   });
+});
 
-})
-
-module.exports = router
+module.exports = router;
