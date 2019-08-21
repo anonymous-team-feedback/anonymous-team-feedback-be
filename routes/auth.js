@@ -18,7 +18,8 @@ router.post("/register", async (req, res) => {
 
   // Create new user
   user = new User({
-    name: req.body.name,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
     password: req.body.password,
     email: req.body.email
   });
@@ -32,7 +33,8 @@ router.post("/register", async (req, res) => {
 
   // Send response and token
   res.header("x-auth-token", token).json({
-    name: user.name,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
     _id: user._id
   });
@@ -57,7 +59,8 @@ router.post("/login", async (req, res) => {
 
   // Send response and token
   res.header("x-auth-token", token).json({
-    name: user.name,
+    firstName: user.firstName,
+    lastName: user.lastName,
     email: user.email,
     _id: user._id
   });

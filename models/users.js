@@ -4,7 +4,13 @@ const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
-  name: {
+  firstName: {
+    type: String,
+    required: true,
+    minlenght: 2,
+    maxlenght: 50
+  },
+  lastName: {
     type: String,
     required: true,
     minlenght: 2,
@@ -35,7 +41,11 @@ const User = mongoose.model("User", userSchema);
 
 function validateUser(user) {
   const schema = {
-    name: Joi.string()
+    firstName: Joi.string()
+      .min(2)
+      .max(50)
+      .required(),
+    lastName: Joi.string()
       .min(2)
       .max(50)
       .required(),
