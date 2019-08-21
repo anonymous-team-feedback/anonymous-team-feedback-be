@@ -8,27 +8,27 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     minlenght: 2,
-    maxlenght: 50
+    maxlength: 50
   },
   email: {
     type: String,
     required: true,
-    minlenght: 5,
-    maxlenght: 255,
+    minlength: 5,
+    maxlength: 255,
     unique: true
   },
   password: {
     type: String,
     required: true,
-    minlenght: 5,
-    maxlenght: 1024
+    minlength: 5,
+    maxlength: 1024
   }
 });
 
 // Method for generating the token
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign({ _id: this._id }, process.env.JWT_PRIVATE_KEY);
-  return token
+  return token;
 };
 
 const User = mongoose.model("User", userSchema);
