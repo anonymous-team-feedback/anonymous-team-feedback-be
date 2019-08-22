@@ -2,6 +2,7 @@
 .vscode
 logfile.logfile
 uncaughtExceptions.log
+.idea
 
 # Logs
 *.log

@@ -1,16 +1,16 @@
-require('dotenv').config();
-const express = require('express');
+require("dotenv").config();
+const express = require("express");
 const server = express();
-const winston = require('winston');
-const cors = require('cors')
-const helmet = require('helmet')
+const winston = require("winston");
+const cors = require("cors");
+const helmet = require("helmet");
 
-server.use(helmet())
-server.use(cors())
+server.use(helmet());
+server.use(cors());
 
-require('./startup/logging')()
-require('./startup/routes')(server);
-require('./startup/db')();
+require("./startup/logging")();
+require("./startup/routes")(server);
+require("./startup/db")();
 
 module.exports = server;
 
