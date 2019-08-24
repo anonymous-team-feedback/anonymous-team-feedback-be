@@ -5,8 +5,12 @@ const winston = require("winston");
 const cors = require("cors");
 const helmet = require("helmet");
 
+const corsOptions = {
+  exposedHeaders: "X-Auth-Token"
+};
+
 server.use(helmet());
-server.use(cors());
+server.use(cors(corsOptions));
 
 require("./startup/logging")();
 require("./startup/routes")(server);
