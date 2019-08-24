@@ -2,15 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const server = express();
 const winston = require("winston");
-// const cors = require("cors");
+const cors = require("cors");
 const helmet = require("helmet");
 
-// const corsOptions = {
-//   exposedHeaders: "X-Auth-Token"
-// };
+const corsOptions = {
+  origin: [process.env.URL, "http://localhost:3000"],
+  exposedHeaders: "X-Auth-Token"
+};
 
 server.use(helmet());
-// server.use(cors(corsOptions));
+server.use(cors(corsOptions));
 
 require("./startup/logging")();
 require("./startup/routes")(server);
