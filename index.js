@@ -6,7 +6,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const corsOptions = {
-  origin: [process.env.URL, "http://localhost:3000"],
   exposedHeaders: "X-Auth-Token"
 };
 
@@ -20,4 +19,5 @@ require("./startup/db")();
 module.exports = server;
 
 const port = process.env.PORT || 5050;
+console.log(process.env);
 server.listen(port, () => winston.info(`Listening on port ${port}`));
