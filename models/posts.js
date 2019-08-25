@@ -35,7 +35,9 @@ function validatePost(post) {
       .max(255)
       .required(),
     poster: Joi.objectId().required(),
-    colleague: Joi.email().required()
+    colleague: Joi.string()
+      .email()
+      .required()
   };
   return Joi.validate(post, schema);
 }
