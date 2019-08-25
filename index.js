@@ -6,7 +6,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const corsOptions = {
-  exposedHeaders: "X-Auth-Token"
+  exposedHeaders: "X-Auth-Token",
+  preflightContinue: true
 };
 
 server.use(helmet());
