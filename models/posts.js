@@ -19,7 +19,7 @@ const postSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
-  targetUser: {
+  colleague: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   }
@@ -33,9 +33,9 @@ function validatePost(post) {
     post: Joi.string()
       .min(5)
       .max(255)
-      .requred(),
+      .required(),
     poster: Joi.objectId().required(),
-    targetUser: Joi.objectId()
+    colleague: Joi.email().required()
   };
   return Joi.validate(post, schema);
 }
