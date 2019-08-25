@@ -62,7 +62,7 @@ router.put("/:id", auth, async (req, res) => {
       .status(400)
       .json({ message: "The post with the given ID was not found" });
 
-  res.status(201).json(updatedPost);
+  res.status(200).json(updatedPost);
 });
 
 router.delete("/:id", async (req, res) => {
