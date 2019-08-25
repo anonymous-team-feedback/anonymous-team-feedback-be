@@ -42,6 +42,29 @@ router.post("/", auth, async (req, res) => {
   res.status(201).json(post);
 });
 
+router.put("/:id", auth, async (req, res) => {
+  // Check request body for missing items
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  // Look up colleague by e-mail
+  const colleague = await User.findOne({ email: req.body.colleague });
+  if (!colleague)
+    return res.status(400).json({ message: "No colleague was found" });
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    req.params.id,
+    { date: req.body.date, post: req.body.post, colleague: colleague._id },
+    { new: true }
+  );
+
+  if (!updatedPost)
+    return res
+      .status(400)
+      .json({ message: "The post with the given ID was not found" });
+
+  res.status(201).json(updatedPost);
+});
+
 router.delete("/:id", async (req, res) => {
   const post = await Post.findByIdAndRemove(req.params.id);
   if (!post)
