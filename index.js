@@ -15,4 +15,5 @@ require("./startup/db")();
 module.exports = server;
 
 const port = process.env.PORT || 5050;
+console.log(process.env);
 server.listen(port, () => winston.info(`Listening on port ${port}`));
