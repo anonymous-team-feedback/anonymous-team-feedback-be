@@ -32,11 +32,12 @@ router.post("/register", async (req, res) => {
   const token = user.generateAuthToken();
 
   // Send response and token
-  res.header("x-auth-token", token).json({
+  res.json({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    _id: user._id
+    _id: user._id,
+    token: token
   });
 });
 
