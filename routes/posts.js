@@ -1,5 +1,5 @@
-const Joi = require("joi");
 const { Post, validate } = require("../models/posts");
+const { User } = require("../models/users");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
@@ -11,6 +11,27 @@ router.get("/", auth, async (req, res) => {
     return res.status(200).json({ message: "No post were found " });
 
   res.status(200).json(posts);
+});
+
+router.post("/", auth, async (req, res) => {
+  // Check request body for missing items
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+  // Look up colleague by e-mail
+  const colleague = await User.findOne({ email: req.body.colleague });
+  if (!colleague)
+    return res.status(400).json({ message: "No colleague was found" });
+
+  // Create new post
+  const post = new Post({
+    date: req.body.date,
+    post: req.body.post,
+    poster: req.user._id,
+    colleague: colleague._id
+  });
+  // Save post
+  post.save();
+  res.status(201).json(post);
 });
 
 module.exports = router;
