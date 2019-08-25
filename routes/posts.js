@@ -13,6 +13,14 @@ router.get("/", auth, async (req, res) => {
   res.status(200).json(posts);
 });
 
+router.get("/:id", async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (!post)
+    return res.status(404).json({ message: "No post was found with that ID" });
+
+  res.status(200).json(post);
+});
+
 router.post("/", auth, async (req, res) => {
   // Check request body for missing items
   const { error } = validate(req.body);
@@ -32,6 +40,14 @@ router.post("/", auth, async (req, res) => {
   // Save post
   post.save();
   res.status(201).json(post);
+});
+
+router.delete("/:id", async (req, res) => {
+  const post = await Post.findByIdAndRemove(req.params.id);
+  if (!post)
+    return res.status(404).json({ message: "No post was found with that ID" });
+
+  res.status(200).json(post);
 });
 
 module.exports = router;
