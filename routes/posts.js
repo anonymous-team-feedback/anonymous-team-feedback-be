@@ -34,11 +34,11 @@ router.post("/", auth, async (req, res) => {
   const post = new Post({
     date: req.body.date,
     post: req.body.post,
-    poster: req.user._id,
+    poster: req.body.poster,
     colleague: colleague._id
   });
   // Save post
-  post.save();
+  await post.save();
   res.status(201).json(post);
 });
 
