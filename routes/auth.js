@@ -28,16 +28,12 @@ router.post("/register", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
 
-  // Create token
-  const token = user.generateAuthToken();
-
   // Send response and token
   res.json({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    _id: user._id,
-    token: token
+    _id: user._id
   });
 });
 
@@ -64,7 +60,8 @@ router.post("/login", async (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    _id: user._id
+    _id: user._id,
+    token: token
   });
 });
 
