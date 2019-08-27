@@ -8,6 +8,7 @@ router.post("/", auth, async (req, res) => {
   const users = await User.find({
     email: rgx
   }).select("email -_id");
+  if (!users) return res.status(400).json({ message: "No users were found" });
 
   res.status(200).json(users);
 });
