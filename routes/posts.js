@@ -1,5 +1,5 @@
 const { Post, validate } = require("../models/posts");
-const { User } = require("../models/users");
+const user = require("../controllers/user");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
@@ -28,7 +28,7 @@ router.post("/", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   // Look up colleague by e-mail
-  const colleague = await User.findOne({ email: req.body.colleague });
+  const colleague = await user.findUserByEmail(req.body.colleague);
   if (!colleague)
     return res.status(400).json({ message: "No colleague was found" });
 
@@ -41,7 +41,7 @@ router.post("/", auth, async (req, res) => {
   });
   // Save post
   await post.save();
-  res.status(201).json(post);
+  res.status(201).json(colleague);
 });
 
 router.put("/:id", auth, async (req, res) => {
@@ -49,7 +49,7 @@ router.put("/:id", auth, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   // Look up colleague by e-mail
-  const colleague = await User.findOne({ email: req.body.colleague });
+  const colleague = await user.findUserByEmail(req.body.colleague);
   if (!colleague)
     return res.status(400).json({ message: "No colleague was found" });
 
