@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Joi = require('joi')
+const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const { User, validate } = require("../models/users");
 const mongoose = require("mongoose");
@@ -14,7 +14,7 @@ router.post("/register", async (req, res) => {
   // Checks if user is already in the database
   let user = await User.findOne({ email: req.body.email });
   if (user)
-    return res.status(400).json({ message: "User is already registered" });
+    return res.status(409).json({ message: "User is already registered" });
 
   // Create new user
   user = new User({
@@ -28,11 +28,8 @@ router.post("/register", async (req, res) => {
   user.password = await bcrypt.hash(user.password, salt);
   await user.save();
 
-  // Create token
-  const token = user.generateAuthToken();
-
   // Send response and token
-  res.header("x-auth-token", token).json({
+  res.json({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
@@ -52,7 +49,8 @@ router.post("/login", async (req, res) => {
 
   // Check if password is valid
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).json({ message: "Invalid email or password" });
+  if (!validPassword)
+    return res.status(400).json({ message: "Invalid email or password" });
 
   // Create token
   const token = user.generateAuthToken();
@@ -62,14 +60,22 @@ router.post("/login", async (req, res) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    _id: user._id
+    _id: user._id,
+    token: token
   });
 });
 
 function validateLogin(req) {
   const schema = {
-    email: Joi.string().min(5).max(255).required().email(),
-    password: Joi.string().min(5).max(255).required()
+    email: Joi.string()
+      .min(5)
+      .max(255)
+      .required()
+      .email(),
+    password: Joi.string()
+      .min(5)
+      .max(255)
+      .required()
   };
 
   return Joi.validate(req, schema);
