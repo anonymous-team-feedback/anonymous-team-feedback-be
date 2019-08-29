@@ -1,5 +1,4 @@
 const request = require('./index.spec');
-const winston = require('winston');
 
 describe('register()', () => {
   it ('success', async () => {
