@@ -3,36 +3,25 @@ const { User } = require("../models/users");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const Pagination = require("../util/pagination.js");
 
 router.get("/", auth, async (req, res) => {
-  const currentUrl = req.protocol + "://" + req.get("host");
+  const start = req.query.start;
+  const limit = req.query.limit;
   const posts = await Post.find({ colleague: req.user._id })
     .select("post date")
-    .limit(parseInt(req.query.limit))
-    .skip(parseInt(req.query.start))
+    .limit(parseInt(limit))
+    .skip(parseInt(start))
     .sort({ date: -1 });
-  const pagination = {
-    next: `${currentUrl}api/posts/?limit=${req.query.limit}?start=${parseInt(
-      req.query.start
-    ) + parseInt(req.query.limit)}`,
-    prev: `${currentUrl}api/posts/?limit=${req.query.limit}?start=${parseInt(
-      req.query.start
-    ) - parseInt(req.query.limit)}`
-  };
+
   // Checks to see if the post is empty or not
-  if (
-    req.query.start < req.query.limit ||
-    req.query.start % req.query.limit != 0
-  )
-    return res
-      .status(200)
-      .json({
-        message:
-          "Start param must greater than or equal to limit and divisible by it"
-      });
-  if (posts.length === 0)
+  if (posts.length === 0) {
     return res.status(200).json({ message: "No post were found " });
-  res.status(200).json({ posts, pagination });
+  }
+  response = Pagination.handlePaginationParams(req);
+  res
+    .status(response.responseCode)
+    .json({ posts: posts, pagination: response.json.pagination });
 });
 
 router.get("/:id", async (req, res) => {
