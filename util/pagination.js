@@ -1,7 +1,12 @@
-exports.handlePaginationParams = req => {
+exports.handlePaginationParams = (req, posts) => {
   const startInt = parseInt(req.query.start);
   const limitInt = parseInt(req.query.limit);
   const currentUrl = req.protocol + "://" + req.get("host");
+  const prev =  `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt -
+    limitInt}`
+ const next = `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt +
+    limitInt}`
+
   switch (true) {
     case limitInt === 0:
       return {
@@ -16,15 +21,31 @@ exports.handlePaginationParams = req => {
             "Start param must greater than or equal to limit and divisible by it"
         }
       };
-    default:
+    case posts.length < limitInt:
       return {
         responseCode: 200,
         json: {
           pagination: {
-            next: `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt +
-              limitInt}`,
-            prev: `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt -
-              limitInt}`
+            prev
+          }
+        }
+      };
+      case posts.findIndex(post => post) < limitInt: 
+      return {
+        responseCode: 200,
+        json: {
+          pagination: {
+              next
+          }
+        }
+      };
+    default:
+      return {
+        responseCode: 200,
+        json: {
+          pagination: { 
+            next, 
+            prev 
           }
         }
       };

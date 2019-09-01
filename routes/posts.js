@@ -18,7 +18,7 @@ router.get("/", auth, async (req, res) => {
   if (posts.length === 0) {
     return res.status(200).json({ message: "No post were found " });
   }
-  response = Pagination.handlePaginationParams(req);
+  response = Pagination.handlePaginationParams(req, posts);
   res
     .status(response.responseCode)
     .json({ posts: posts, pagination: response.json.pagination });
