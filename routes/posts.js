@@ -6,8 +6,6 @@ const auth = require("../middleware/auth");
 const Pagination = require("../util/pagination.js");
 
 router.get("/", auth, async (req, res) => {
-  const start = req.query.start;
-  const limit = req.query.limit;
   const posts = await Post.find({ colleague: req.user._id })
     .select("post date")
     .limit(parseInt(limit))
