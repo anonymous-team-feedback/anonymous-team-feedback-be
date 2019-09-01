@@ -18,13 +18,11 @@ router.get("/", auth, async (req, res) => {
   }
   response = Pagination.handlePaginationParams(req, posts);
 
-  res
-    .status(response.responseCode)
-    .json({
-      posts: posts,
-      [Object.keys(response.json)[0]]:
-        response["json"][Object.keys(response.json)[0]]
-    });
+  res.status(response.responseCode).json({
+    posts: posts,
+    //this returns the second key  of the response we get back whatever it is--it may be message or it may be pagination
+    [Object.keys(response)[1]]: response[Object.keys(response)[1]]
+  });
 });
 
 router.get("/:id", async (req, res) => {
