@@ -12,7 +12,9 @@ exports.handlePaginationParams = (req, posts) => {
     case limitInt === 0:
       return {
         responseCode: 400,
-        message: "Limit param must be greater than zero"
+        json: {
+          message: "Limit param must be greater than zero"
+        }
       };
     case startInt < limitInt || startInt % limitInt != 0:
       return {

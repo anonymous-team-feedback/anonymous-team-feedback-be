@@ -8,8 +8,8 @@ const Pagination = require("../util/pagination.js");
 router.get("/", auth, async (req, res) => {
   const posts = await Post.find({ colleague: req.user._id })
     .select("post date")
-    .limit(parseInt(limit))
-    .skip(parseInt(start))
+    .limit(parseInt(req.query.limit))
+    .skip(parseInt(req.query.start))
     .sort({ date: -1 });
 
   // Checks to see if the post is empty or not
@@ -17,9 +17,10 @@ router.get("/", auth, async (req, res) => {
     return res.status(200).json({ message: "No post were found " });
   }
   response = Pagination.handlePaginationParams(req, posts);
+  console.log(response)
   res
     .status(response.responseCode)
-    .json({ posts: posts, pagination: response.json.pagination });
+    .json({ posts: posts, json: response.json });
 });
 
 router.get("/:id", async (req, res) => {
