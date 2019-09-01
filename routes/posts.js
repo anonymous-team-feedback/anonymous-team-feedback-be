@@ -17,10 +17,14 @@ router.get("/", auth, async (req, res) => {
     return res.status(200).json({ message: "No post were found " });
   }
   response = Pagination.handlePaginationParams(req, posts);
-  console.log(response)
+
   res
     .status(response.responseCode)
-    .json({ posts: posts, json: response.json });
+    .json({
+      posts: posts,
+      [Object.keys(response.json)[0]]:
+        response["json"][Object.keys(response.json)[0]]
+    });
 });
 
 router.get("/:id", async (req, res) => {
