@@ -19,6 +19,7 @@ router.get("/", auth, async (req, res) => {
       req.query.start
     ) - parseInt(req.query.limit)}`
   };
+  // Checks to see if the post is empty or not
   if (
     req.query.start < req.query.limit ||
     req.query.start % req.query.limit != 0
@@ -29,7 +30,6 @@ router.get("/", auth, async (req, res) => {
         message:
           "Start param must greater than or equal to limit and divisible by it"
       });
-        // Checks to see if the post is empty or not
   if (posts.length === 0)
     return res.status(200).json({ message: "No post were found " });
   res.status(200).json({ posts, pagination });

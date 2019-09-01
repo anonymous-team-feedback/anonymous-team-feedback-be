@@ -4,6 +4,10 @@ const server = express();
 const winston = require("winston");
 const cors = require("cors");
 const helmet = require("helmet");
+const paginationUtils = require('./util/pagination.js');
+
+exports.Pagination = paginationUtils
+
 
 server.use(helmet());
 server.use(cors());
