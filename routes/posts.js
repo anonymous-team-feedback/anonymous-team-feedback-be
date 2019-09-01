@@ -8,6 +8,7 @@ router.get("/", auth, async (req, res) => {
   const posts = await Post.find({ colleague: req.user._id })
     .select("post date")
     .limit(parseInt(req.query.limit))
+    .skip(parseInt(req.query.start))
     .sort({ date: -1 });
   // Checks to see if the post is empty or not
   if (posts.length === 0)
