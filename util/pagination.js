@@ -1,11 +1,12 @@
 exports.handlePaginationParams = (req, posts) => {
+  const path = req.originalUrl.split("?").shift();
   const startInt = parseInt(req.query.start);
   const limitInt = parseInt(req.query.limit);
   const currentUrl = req.protocol + "://" + req.get("host");
-  const prev =  `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt -
-    limitInt}`
- const next = `${currentUrl}/api/posts/?limit=${limitInt}?start=${startInt +
-    limitInt}`
+  const prev = `${currentUrl}${path}?limit=${limitInt}?start=${startInt -
+    limitInt}`;
+  const next = `${currentUrl}${path}?limit=${limitInt}?start=${startInt +
+    limitInt}`;
 
   switch (true) {
     case limitInt === 0:
@@ -30,12 +31,12 @@ exports.handlePaginationParams = (req, posts) => {
           }
         }
       };
-      case posts.findIndex(post => post) < limitInt: 
+    case posts.findIndex(post => post) < limitInt:
       return {
         responseCode: 200,
         json: {
           pagination: {
-              next
+            next
           }
         }
       };
@@ -43,9 +44,9 @@ exports.handlePaginationParams = (req, posts) => {
       return {
         responseCode: 200,
         json: {
-          pagination: { 
-            next, 
-            prev 
+          pagination: {
+            next,
+            prev
           }
         }
       };
