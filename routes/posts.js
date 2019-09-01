@@ -5,13 +5,13 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 router.get("/", auth, async (req, res) => {
-  const posts = await Post.find({ colleague: req.user._id }).select(
-    "post date"
-  );
+  const posts = await Post.find({ colleague: req.user._id })
+    .select("post date")
+    .limit(parseInt(req.query.limit))
+    .sort({ date: -1 });
   // Checks to see if the post is empty or not
   if (posts.length === 0)
     return res.status(200).json({ message: "No post were found " });
-
   res.status(200).json(posts);
 });
 
