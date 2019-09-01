@@ -1,5 +1,5 @@
 exports.handlePaginationParams = (req, posts) => {
-   //define the path we're on using the req so we can use it to giv a url later 
+   //define the path we're on using the req so we can use it to give a url later 
   const path = req.originalUrl.split("?").shift();
   //make sure the params we're being given by the user are ints
   const startInt = parseInt(req.query.start);
