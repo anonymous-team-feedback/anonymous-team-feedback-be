@@ -5,15 +5,34 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 router.get("/", auth, async (req, res) => {
+  const currentUrl = req.protocol + "://" + req.get("host");
   const posts = await Post.find({ colleague: req.user._id })
     .select("post date")
     .limit(parseInt(req.query.limit))
     .skip(parseInt(req.query.start))
     .sort({ date: -1 });
-  // Checks to see if the post is empty or not
+  const pagination = {
+    next: `${currentUrl}api/posts/?limit=${req.query.limit}?start=${parseInt(
+      req.query.start
+    ) + parseInt(req.query.limit)}`,
+    prev: `${currentUrl}api/posts/?limit=${req.query.limit}?start=${parseInt(
+      req.query.start
+    ) - parseInt(req.query.limit)}`
+  };
+  if (
+    req.query.start < req.query.limit ||
+    req.query.start % req.query.limit != 0
+  )
+    return res
+      .status(200)
+      .json({
+        message:
+          "Start param must greater than or equal to limit and divisible by it"
+      });
+        // Checks to see if the post is empty or not
   if (posts.length === 0)
     return res.status(200).json({ message: "No post were found " });
-  res.status(200).json(posts);
+  res.status(200).json({ posts, pagination });
 });
 
 router.get("/:id", async (req, res) => {
