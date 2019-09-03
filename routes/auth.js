@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const Joi = require('joi')
+const Joi = require("joi");
 const bcrypt = require("bcryptjs");
 const { User, validate } = require("../models/users");
 const mongoose = require("mongoose");
@@ -52,7 +52,8 @@ router.post("/login", async (req, res) => {
 
   // Check if password is valid
   const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).json({ message: "Invalid email or password" });
+  if (!validPassword)
+    return res.status(400).json({ message: "Invalid email or password" });
 
   // Create token
   const token = user.generateAuthToken();
@@ -68,8 +69,15 @@ router.post("/login", async (req, res) => {
 
 function validateLogin(req) {
   const schema = {
-    email: Joi.string().min(5).max(255).required().email(),
-    password: Joi.string().min(5).max(255).required()
+    email: Joi.string()
+      .min(5)
+      .max(255)
+      .required()
+      .email(),
+    password: Joi.string()
+      .min(5)
+      .max(255)
+      .required()
   };
 
   return Joi.validate(req, schema);
