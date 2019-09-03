@@ -1,0 +1,336 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "InCog API",
+    "description" : "API documentation for InCog",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://anonymous-team-feedback.herokuapp.com/api"
+  } ],
+  "paths" : {
+    "/posts" : {
+      "get" : {
+        "tags" : [ "posts" ],
+        "summary" : "Retrievs all post",
+        "operationId" : "Retrievs all post",
+        "parameters" : [ {
+          "name" : "x-auth-token",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully returned a list of artists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "post_auth" : [ "read:pets" ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "posts" ],
+        "summary" : "Add a new post",
+        "operationId" : "Add a new post",
+        "parameters" : [ {
+          "name" : "x-auth-token",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Posts"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "401" : {
+            "description" : "Invalid request body"
+          }
+        },
+        "security" : [ {
+          "post_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      }
+    },
+    "/posts/{postId}" : {
+      "get" : {
+        "tags" : [ "posts" ],
+        "summary" : "Get specific post",
+        "operationId" : "Get specific post",
+        "parameters" : [ {
+          "name" : "x-auth-token",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "postId",
+          "in" : "path",
+          "description" : "ID of given post",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfully returned a list of artists",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/inline_response_200"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "invalid request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_400"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "post_auth" : [ "read:pets" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "posts" ],
+        "summary" : "Update post",
+        "operationId" : "update post",
+        "parameters" : [ {
+          "name" : "x-auth-token",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "postId",
+          "in" : "path",
+          "description" : "ID of given post",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Posts"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "401" : {
+            "description" : "Invalid request body"
+          }
+        },
+        "security" : [ {
+          "post_auth" : [ "write:pets", "read:pets" ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "posts" ],
+        "summary" : "Delete a post",
+        "operationId" : "deletePost",
+        "parameters" : [ {
+          "name" : "x-auth-token",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "postId",
+          "in" : "path",
+          "description" : "ID of given post",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Post not found"
+          }
+        },
+        "security" : [ {
+          "post_auth" : [ "read:pets" ]
+        } ]
+      }
+    },
+    "/auth/register" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Users"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Invalid request body"
+          }
+        }
+      }
+    },
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "users" ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "400" : {
+            "description" : "Invalid request body"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Posts" : {
+        "type" : "object",
+        "properties" : {
+          "date" : {
+            "type" : "string"
+          },
+          "poster" : {
+            "type" : "string"
+          },
+          "colleague" : {
+            "type" : "string"
+          },
+          "post" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Users" : {
+        "type" : "object",
+        "properties" : {
+          "firstName" : {
+            "type" : "string"
+          },
+          "lastName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "date" : {
+            "type" : "string"
+          },
+          "post" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_400" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "body" : {
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
