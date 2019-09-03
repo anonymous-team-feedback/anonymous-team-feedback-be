@@ -5,9 +5,9 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 router.get("/", auth, async (req, res) => {
-  const posts = await Post.find({ colleague: req.user._id }).select(
-    "post date"
-  );
+  const posts = await Post.find({ colleague: req.user._id })
+    .select("post date")
+    .sort({ date: -1 });
   // Checks to see if the post is empty or not
   if (posts.length === 0)
     return res.status(200).json({ message: "No post were found " });
@@ -79,8 +79,10 @@ router.delete("/:id", async (req, res) => {
 router.post("/users", auth, async (req, res) => {
   // Create regular expression to run against the DB.
   const rgx = new RegExp(req.body.email, "ig");
+  // Look for users matching expression
   const users = await User.find({
-    email: rgx
+    email: rgx,
+    _id: { $ne: req.user._id }
   }).select("email -_id");
   if (!users) return res.status(400).json({ message: "No users were found" });
 
