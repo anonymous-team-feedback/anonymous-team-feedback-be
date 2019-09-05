@@ -8,17 +8,11 @@ router.get("/", auth, async (req, res) => {
   const posts = await Post.find({ colleague: req.user._id }).select(
     "post date"
   );
-  // Checks to see if the post is empty or not
-  if (posts.length === 0)
-    return res.status(200).json({ message: "No post were found " });
-
   res.status(200).json(posts);
 });
 
 router.get("/:id", async (req, res) => {
   const post = await Post.findById(req.params.id);
-  if (!post)
-    return res.status(404).json({ message: "No post was found with that ID" });
 
   res.status(200).json(post);
 });
