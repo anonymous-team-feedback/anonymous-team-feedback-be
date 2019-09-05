@@ -13,6 +13,8 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const post = await Post.findById(req.params.id);
+  if (!post)
+    return res.status(404).json({ message: "No post was found with that ID" });
 
   res.status(200).json(post);
 });
