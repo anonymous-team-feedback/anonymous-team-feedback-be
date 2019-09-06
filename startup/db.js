@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const winston = require("winston");
 
 const databaseUrl =
-  process.env.MONGODB_URI || "mongodb://localhost/anonteamfeedback";
+      process.env.MONGODB_TEST_URI || "mongodb://localhost/anonteamfeedback-test";
 module.exports = function() {
   mongoose.set("useCreateIndex", true);
   mongoose
