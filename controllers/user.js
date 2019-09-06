@@ -19,8 +19,13 @@ async function findUserByEmail(userEmail) {
   return await User.findOne({ email: userEmail });
 }
 
+async function findUserAndUpdate(user_id, data) {
+  return await User.findByIdAndUpdate(user_id, data, { new: true });
+}
+
 module.exports = {
   findUserByEmail,
   createUser,
-  deleteUser
+  deleteUser,
+  findUserAndUpdate
 };
