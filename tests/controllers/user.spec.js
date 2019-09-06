@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 let testUserId = '';
 
 beforeAll(async () => {
-  const url =  process.env.MONGODB_URI || "mongodb://localhost/anonteamfeedback";
+  const url =  process.env.MONGODB_TEST_URI || "mongodb://localhost/anonteamfeedback-test";
   await mongoose.connect(url, { useNewUrlParser: true });
 
   mongoose.set('useFindAndModify', false);
