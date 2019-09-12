@@ -68,11 +68,15 @@ router.delete("/:id", async (req, res) => {
 
 // Returns a list of e-mail addresses from the colleague field on the front end
 router.post("/users", auth, async (req, res) => {
+  // Create regular expression to run against the DB.
+  const rgx = new RegExp(req.body.email, "ig");
   // Look for users matching expression
-  const users = await user.findUsers(req.body.email, req.body.user._id);
+  const users = await User.find({
+    email: rgx,
+    _id: { $ne: req.user._id }
+  }).select("email -_id");
   if (!users) return res.status(400).json({ message: "No users were found" });
 
   res.status(200).json(users);
 });
-
 module.exports = router;
