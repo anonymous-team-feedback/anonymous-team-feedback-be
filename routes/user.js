@@ -6,7 +6,7 @@ const { User } = require("../models/users");
 const bcrypt = require("bcryptjs");
 
 router.put("/:id", auth, async (req, res) => {
-  const updatedUser = user.findByIdAndUpdate(req.params.id, req.body);
+  const updatedUser = user.findUserAndUpdate(req.params.id, req.body);
 
   res.status(201).json(updatedUser);
 })
