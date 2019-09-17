@@ -27,6 +27,12 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 1024
+  },
+  jobTitle: {
+    type: String,
+    required: false,
+    minlength: 5,
+    maxlength: 255
   }
 });
 
