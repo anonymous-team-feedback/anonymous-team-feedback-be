@@ -5,7 +5,8 @@ async function createUser(userData) {
     firstName: userData.firstName,
     lastName: userData.lastName,
     password: userData.password,
-    email: userData.email
+    email: userData.email,
+    jobTitle: userData.jobTitle
   });
 
   return await user.save();

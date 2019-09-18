@@ -24,7 +24,8 @@ router.post("/register", async (req, res) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     password: await bcrypt.hash(req.body.password, salt),
-    email: req.body.email
+    email: req.body.email,
+    jobTitle: req.body.jobTitle
   });
 
   // Send response and token
@@ -32,6 +33,7 @@ router.post("/register", async (req, res) => {
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,
+    jobtTitle: _user.jobTitle,
     _id: _user._id
   });
 });
@@ -59,6 +61,7 @@ router.post("/login", async (req, res) => {
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,
+    jobTitle: _user.jobTitle,
     _id: _user._id,
     token: token
   });
