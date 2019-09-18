@@ -11,6 +11,7 @@ server.use(cors());
 require("./startup/logging")();
 require("./startup/routes")(server);
 require("./startup/db")();
+require("./startup/slack")();
 
 module.exports = server;
 
