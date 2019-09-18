@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const Joi = require("joi");
-Joi.objectId = require("joi-objectid")(Joi);
 
 const teamsSchema = mongoose.Schema({
   name: {
@@ -13,16 +11,15 @@ const teamsSchema = mongoose.Schema({
   manager: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: true
   },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-    default: []
-  }]
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    }
+  ]
 });
 
-
 exports.Team = mongoose.model("Team", teamsSchema);
-
