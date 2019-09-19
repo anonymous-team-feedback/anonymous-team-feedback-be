@@ -2,20 +2,32 @@ const { Team } = require("../models/teams");
 
 module.exports = {
   createTeam,
-  getTeam
+  getTeam,
+  updateTeamById,
+  findTeamById,
+  deleteTeamByid
 };
 
 async function getTeam(managerId) {
-    const team = await Team.find({manager: managerId})
-    return team
+  return await Team.find({ manager: managerId });
 }
 
 async function createTeam(teamInfo, managerId) {
-  console.log(teamInfo, managerId);
   const team = new Team({
     name: teamInfo.name,
     manager: managerId
   });
-  await team.save();
-  return team;
+  return await team.save();
+}
+
+async function findTeamById(teamId) {
+  return await Team.findById(teamId);
+}
+
+async function updateTeamById(teamId, updateTeam) {
+  return await Team.findByIdAndUpdate(teamId, updateTeam, { new: true });
+}
+
+async function deleteTeamByid(teamId) {
+  return await Team.findByIdAndDelete(teamId);
 }
