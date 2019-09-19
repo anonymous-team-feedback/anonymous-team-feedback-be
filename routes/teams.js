@@ -1,13 +1,14 @@
 /* eslint-disable no-undef */
 const Joi = require("joi");
 const { Team } = require("../models/teams");
-const { createTeam } = require("../controllers/teams")
+const { createTeam, getTeam } = require("../controllers/teams")
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 
+
 router.get("/", auth, async (req, res) => {
-  const team = Team.find();
+  const team = await getTeam(req.user._id)
   res.status(200).json(team);
 });
 

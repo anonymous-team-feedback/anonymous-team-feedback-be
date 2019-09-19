@@ -1,8 +1,14 @@
 const { Team } = require("../models/teams");
 
 module.exports = {
-  createTeam
+  createTeam,
+  getTeam
 };
+
+async function getTeam(managerId) {
+    const team = await Team.find({manager: managerId})
+    return team
+}
 
 async function createTeam(teamInfo, managerId) {
   console.log(teamInfo, managerId);
