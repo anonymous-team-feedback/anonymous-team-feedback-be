@@ -13,6 +13,11 @@ const teamsSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
+  slug: {
+    type: String,
+    required: true,
+    unique: true
+  },
   members: [
     {
       type: mongoose.Schema.Types.ObjectId,
