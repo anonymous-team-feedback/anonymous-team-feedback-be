@@ -3,9 +3,9 @@ const Joi = require("joi");
 const {
   createTeam,
   getTeam,
-  updateTeamById,
-  findTeamById,
-  deleteTeamByid
+  updateTeamBySlug,
+  findTeamBySlug,
+  deleteTeamBySlug
 } = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
@@ -16,8 +16,8 @@ router.get("/", auth, async (req, res) => {
   res.status(200).json(team);
 });
 
-router.get("/:id", async (req, res) => {
-  const team = await findTeamById(req.params.id);
+router.get("/:slug", async (req, res) => {
+  const team = await findTeamBySlug(req.params.slug);
   if (!team) {
     res.status(400).json({ message: "No team found with provided id" });
   }
@@ -32,32 +32,37 @@ router.post("/", auth, async (req, res) => {
   res.status(201).json(team);
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:slug", auth, async (req, res) => {
   const { error } = validateTeam(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  let team = await findTeamById(req.params.id);
+  let team = await findTeamBySlug(req.params.slug);
   if (!team) {
-    res.status(400).json({ message: "No team found with provided id" });
+    res.status(400).json({ message: "No team found with provided slug" });
   }
-  team = await updateTeamById(req.params.id, { name: req.body.name });
+  
+  team = await updateTeamBySlug(req.params.slug, {
+    slug: req.body.slug,
+    name: req.body.name
+  });
 
   res.status(200).json(team);
 });
 
-router.delete("/:id", auth, async (req, res) => {
-  const team = await deleteTeamByid(req.params.id)
+router.delete("/:slug", auth, async (req, res) => {
+  const team = await deleteTeamBySlug({ slug: req.params.slug });
   if (!team) {
-    res.status(400).json({ message: "No team found with provided id" });
+    res.status(400).json({ message: "No team found with provided slug" });
   }
   res.status(200).json(team);
-})
+});
 
 function validateTeam(team) {
   const schema = {
     name: Joi.string()
       .min(3)
       .max(255)
-      .required()
+      .required(),
+    slug: Joi.string().required()
   };
   return Joi.validate(team, schema);
 }

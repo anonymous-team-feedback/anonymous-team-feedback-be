@@ -3,9 +3,9 @@ const { Team } = require("../models/teams");
 module.exports = {
   createTeam,
   getTeam,
-  updateTeamById,
-  findTeamById,
-  deleteTeamByid
+  updateTeamBySlug,
+  findTeamBySlug,
+  deleteTeamBySlug
 };
 
 async function getTeam(managerId) {
@@ -15,19 +15,20 @@ async function getTeam(managerId) {
 async function createTeam(teamInfo, managerId) {
   const team = new Team({
     name: teamInfo.name,
-    manager: managerId
+    manager: managerId,
+    slug: teamInfo.slug
   });
   return await team.save();
 }
 
-async function findTeamById(teamId) {
-  return await Team.findById(teamId);
+async function findTeamBySlug(slug) {
+  return await Team.findOne({slug})
 }
 
-async function updateTeamById(teamId, updateTeam) {
-  return await Team.findByIdAndUpdate(teamId, updateTeam, { new: true });
+async function updateTeamBySlug(slug, updateTeam) {
+  return await Team.findOneAndUpdate(slug, updateTeam, { new: true });
 }
 
-async function deleteTeamByid(teamId) {
-  return await Team.findByIdAndDelete(teamId);
+async function deleteTeamBySlug(teamSlug) {
+  return await Team.findOneAndDelete(teamSlug)
 }
