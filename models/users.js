@@ -27,6 +27,12 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 1024
+  },
+  jobTitle: {
+    type: String,
+    required: true,
+    minlength: 5,
+    maxlength: 255
   }
 });
 
@@ -48,6 +54,10 @@ function validateUser(user) {
       .email()
       .required(),
     password: Joi.string()
+      .min(5)
+      .max(255)
+      .required(),
+    jobTitle: Joi.string()
       .min(5)
       .max(255)
       .required()
