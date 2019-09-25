@@ -13,22 +13,13 @@ const joinTeamSchema = mongoose.Schema({
     ref: "User",
     required: true
   },
-  pending: {
+  approved: {
     type: Boolean,
     required: true,
     default: false
   }
 });
 
-const Join = mongoose.model("Join", joinTeamSchema);
+const JoinTeam = mongoose.model("JoinTeam", joinTeamSchema);
 
-function validateJoin(teamData) {
-  const schema = {
-    team: Joi.objectId().required(),
-    user: Joi.objectId().required(),
-    pending: Joi.boolean()
-  };
-  return Joi.validate(teamData, schema);
-}
-exports.Join = Join;
-exports.validate = validateJoin;
+exports.JoinTeam = JoinTeam;
