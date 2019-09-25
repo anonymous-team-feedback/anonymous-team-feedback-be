@@ -33,6 +33,10 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 5,
     maxlength: 255
+  },
+  team: { 
+    type: String, 
+    ref: "Team"
   }
 });
 
