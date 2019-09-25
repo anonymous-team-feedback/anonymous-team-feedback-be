@@ -1,5 +1,7 @@
 const { JoinTeam } = require("../models/joinTeams");
 const { Team } = require("../models/teams");
+const mongoose = require("mongoose");
+
 
 async function requestJoinTeam(requestData) {
   const request = new JoinTeam(requestData);
@@ -13,12 +15,18 @@ async function getTeamIdBySlug(slug) {
 }
 
 async function checkIfManager(managerId) {
-    return await Team.findOne({ manager: managerId})
+  return await Team.find({ manager: managerId });
 }
 
-// async function updateTeamMembers(teamInfo) {
-    
-// }
+async function updateTeamMembers(teamInfo) {
+  const team = await Team.findOneAndUpdate(
+    { slug: teamInfo.slug },
+    { $push: { members: teamInfo.user } }
+  );
+  return await team;
+}
+
+
 
 module.exports = {
   requestJoinTeam,
