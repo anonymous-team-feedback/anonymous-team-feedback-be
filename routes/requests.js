@@ -1,5 +1,5 @@
 const { validate } = require("../models/requests");
-const Requests = require("../controllers/requests");
+const requests = require("../controllers/requests");
 const teams  = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
@@ -21,7 +21,7 @@ router.get("/:id", auth, async (req, res) => {
 });
 
 router.get("/:team", auth, async (req, res) => {
-  const requests = await Requests.findByTeam(req.paramas.team);
+  const requests = await requests.findByTeam(req.paramas.team);
   if (!requests) {
     return res
       .status(404)
