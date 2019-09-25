@@ -4,6 +4,7 @@ module.exports = {
   createTeam,
   getTeam,
   updateTeamBySlug,
+  findTeamByUserId,
   findTeamBySlug,
   deleteTeamBySlug
 };
@@ -21,8 +22,12 @@ async function createTeam(teamInfo, managerId) {
   return await team.save();
 }
 
+async function findTeamByUserId(userId) {
+  return await Team.findOne({ members: { _id: userId } });
+}
+
 async function findTeamBySlug(slug) {
-  return await Team.findOne({slug})
+  return await Team.findOne({ slug });
 }
 
 async function updateTeamBySlug(slug, updateTeam) {
@@ -30,5 +35,5 @@ async function updateTeamBySlug(slug, updateTeam) {
 }
 
 async function deleteTeamBySlug(teamSlug) {
-  return await Team.findOneAndDelete(teamSlug)
+  return await Team.findOneAndDelete(teamSlug);
 }
