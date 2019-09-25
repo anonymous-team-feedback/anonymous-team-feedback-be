@@ -33,7 +33,6 @@ router.get("/:team", auth, async (req, res) => {
 });
 
 router.post("/", auth, async (req, res) => {
-  // Check request body for missing items
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);;
 
@@ -41,7 +40,7 @@ router.post("/", auth, async (req, res) => {
     date: req.body.date,
     request: req.body.request,
     requester: req.user._id,
-    team: team.findTeamByUserId(req.user._id)
+    team: teams.findTeamByUserId(req.user._id)
   });
   res.status(200).json(request);
 });
