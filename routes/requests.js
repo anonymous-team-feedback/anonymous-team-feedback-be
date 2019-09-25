@@ -2,7 +2,7 @@ const { validate } = require("../models/requests");
 const Requests = require("../controllers/requests");
 const user = require("../controllers/user");
 const { User } = require("../models/users");
-const { Teams } = require("../models/teams");
+const teams  = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
@@ -41,9 +41,9 @@ router.post("/", auth, async (req, res) => {
     date: req.body.date,
     request: req.body.request,
     requester: req.user._id,
-    team: "",
+    team: team.findTeamByUserId(req.user._id)
   });
-  res.status(200).json(_post);
+  res.status(200).json(request);
 });
 
 
