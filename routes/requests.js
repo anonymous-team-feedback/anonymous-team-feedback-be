@@ -2,6 +2,7 @@ const { validate } = require("../models/requests");
 const Requests = require("../controllers/requests");
 const user = require("../controllers/user");
 const { User } = require("../models/users");
+const { Teams } = require("../models/teams");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
