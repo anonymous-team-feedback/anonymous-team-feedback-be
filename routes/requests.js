@@ -1,7 +1,5 @@
 const { validate } = require("../models/requests");
 const Requests = require("../controllers/requests");
-const user = require("../controllers/user");
-const { User } = require("../models/users");
 const teams  = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
