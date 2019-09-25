@@ -26,7 +26,7 @@ const requestSchema = mongoose.Schema({
   }
 });
 
-const Request = mongoose.model("Request", postSchema);
+const Request = mongoose.model("Request", requestSchema);
 
 function validateRequest(request) {
   const schema = {
