@@ -36,7 +36,7 @@ const Request = mongoose.model("Request", requestSchema);
 function validateRequest(request) {
   const schema = {
     date: Joi.date().required(),
-    post: Joi.string()
+    request: Joi.string()
       .min(5)
       .max(255)
       .required(),
