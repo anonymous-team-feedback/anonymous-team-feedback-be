@@ -8,6 +8,10 @@ async function findByRequesterId(requesterId) {
   return await Post.find({ requester: requesterId }).select("request date");
 }
 
+async function findByTeam(team) {
+  return await Post.find({ team }).select("request date");
+}
+
 async function createRequest(requestData) {
   const request = new Request(requestData);
   return await request.save();
@@ -24,6 +28,7 @@ async function deleteRequestById(requestId) {
 module.exports = {
   findRequestById,
   findByRequesterId,
+  findByTeam,
   updateRequestById,
   deleteRequestById,
   createRequest

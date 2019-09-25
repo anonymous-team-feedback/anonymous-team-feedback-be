@@ -23,6 +23,11 @@ const requestSchema = mongoose.Schema({
     type: Number,
     required: true,
     default: 0
+  },
+  team: { 
+    type: String,
+    ref: "Team",
+    required: true, 
   }
 });
 
