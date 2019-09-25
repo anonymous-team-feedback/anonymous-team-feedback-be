@@ -6,8 +6,8 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 
 router.get("/", auth, async (req, res) => {
-  const requests = await post.findByRequesterId(req.user._id);
-  res.status(200).json(posts);
+  const _requests = await post.findByRequesterId(req.user._id);
+  res.status(200).json(_requests);
 });
 
 router.get("/:id", auth, async (req, res) => {
