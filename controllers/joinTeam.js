@@ -1,6 +1,7 @@
-const { JoinTeam } = require("../models/joinTeams");
+const  {JoinTeam}  = require("../models/joinTeams");
 const { Team } = require("../models/teams");
-const mongoose = require("mongoose");
+
+
 
 
 async function requestJoinTeam(requestData) {
@@ -26,11 +27,18 @@ async function updateTeamMembers(teamInfo) {
   return await team;
 }
 
+async function getPendingRequest(slug) {
+    const teamId = await getTeamIdBySlug(slug)
+    const team = await JoinTeam.find({team: teamId}).populate('user', 'email name')
+    return team
+
+}
 
 
 module.exports = {
   requestJoinTeam,
   getTeamIdBySlug,
   checkIfManager,
-  updateTeamMembers
+  updateTeamMembers,
+  getPendingRequest,
 };
