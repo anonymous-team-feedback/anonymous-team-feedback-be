@@ -40,8 +40,8 @@ function validateRequest(request) {
       .min(5)
       .max(255)
       .required(),
-    requester: Joi.objectId().required(),
-    fufilled: Joi.number().required()
+    requester: Joi.objectId(),
+    fufilled: Joi.number(),
   };
   return Joi.validate(request, schema);
 }

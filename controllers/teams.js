@@ -22,8 +22,12 @@ async function createTeam(teamInfo, managerId) {
   return await team.save();
 }
 
+// async function findTeamByUserId(userId) {
+//   return await Team.findOne({ members: { _id: userId } }).select("slug")
+// }
+
 async function findTeamByUserId(userId) {
-  return await Team.findOne({ members: { _id: userId } });
+  return await Team.find({ members: userId })
 }
 
 async function findTeamBySlug(slug) {
