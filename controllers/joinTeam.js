@@ -29,7 +29,7 @@ async function updateTeamMembers(teamInfo) {
 
 async function getPendingRequest(slug) {
     const teamId = await getTeamIdBySlug(slug)
-    const team = await JoinTeam.find({team: teamId}).populate('user', 'email firstName lastName')
+    const team = await JoinTeam.find({team: teamId}).populate('user', 'email firstName lastName jobTitle')
     return team
 
 }
