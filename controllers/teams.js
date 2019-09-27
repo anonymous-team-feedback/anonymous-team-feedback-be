@@ -27,7 +27,11 @@ async function findTeamBySlug(slug) {
 }
 
 async function findTeamByUser(userId) {
-  return await Team.find({ members: userId });
+  const team = await Team.find({ members: userId });
+  if (!team) {
+    team = await Team.find({ manager: userId });
+  }
+  return team;
 }
 
 async function updateTeamBySlug(slug, updateTeam) {
