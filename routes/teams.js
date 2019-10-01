@@ -5,6 +5,7 @@ const {
   getTeam,
   updateTeamBySlug,
   findTeamBySlug,
+  findTeamByUser,
   deleteTeamBySlug
 } = require("../controllers/teams");
 const express = require("express");
@@ -23,6 +24,14 @@ router.get("/:slug", async (req, res) => {
   }
   res.status(200).json(team);
 });
+
+router.get("/:id", auth, async (req, res) => {
+  const team = await findTeamByUser(req.params.id);
+  if (!team) {
+    res.status(400).json({ message: "No team found with provided member id" });
+  }
+  res.status(200).json(team);
+})
 
 router.post("/", auth, async (req, res) => {
   const { error } = validateTeam(req.body);

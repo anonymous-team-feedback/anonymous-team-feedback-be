@@ -2,6 +2,7 @@ const { validate } = require("../models/posts");
 const post = require("../controllers/posts");
 const user = require("../controllers/user");
 const { User } = require("../models/users");
+const { findTeamByUser } = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
@@ -69,12 +70,13 @@ router.delete("/:id", async (req, res) => {
 
 // Returns a list of e-mail addresses from the colleague field on the front end
 router.post("/users", auth, async (req, res) => {
+  const team = await findTeamByUser(req.user._id);
   // Create regular expression to run against the DB.
   const rgx = new RegExp(req.body.email, "ig");
   // Look for users matching expression
   const users = await User.find({
     email: rgx,
-    _id: { $ne: req.user._id }
+    _id: { $ne: req.user._id, $in: team.members }
   }).select("email -_id");
   if (!users) return res.status(400).json({ message: "No users were found" });
 
