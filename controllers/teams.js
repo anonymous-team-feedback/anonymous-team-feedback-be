@@ -17,7 +17,8 @@ async function createTeam(teamInfo, managerId) {
   const team = new Team({
     name: teamInfo.name,
     manager: managerId,
-    slug: teamInfo.slug
+    slug: teamInfo.slug,
+    members: [ managerId ]
   });
   return await team.save();
 }
@@ -27,11 +28,7 @@ async function findTeamBySlug(slug) {
 }
 
 async function findTeamByUser(userId) {
-  let team = await Team.findOne({ members: userId });
-  if (!team) {
-    team = await Team.findOne({ manager: userId });
-  }
-  return team;
+  return await Team.findOne({ members: userId });
 }
 
 async function updateTeamBySlug(slug, updateTeam) {
