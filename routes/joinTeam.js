@@ -5,7 +5,8 @@ const {
   getTeamIdBySlug,
   checkIfManager,
   updateTeamMembers,
-  getPendingRequest
+  getPendingRequest,
+  removeRequest
 } = require("../controllers/joinTeam");
 
 const express = require("express");
@@ -50,10 +51,17 @@ router.put("/", auth, async (req, res) => {
   }
 
   if (req.body.approved === "false") {
-    res.status(400).json({ message: "Not approved" });
+    const user = await removeRequest(req.body.user);
+    if (!user) {
+      res.status(400).json({ message: "No request was found" });
+    }
+    res
+      .status(200)
+      .json({ message: "User has been removed from pending list" });
   }
+
   const result = await updateTeamMembers(req.body);
-  res.status(200).json(result);
+  res.status(200).json(result[0]);
 });
 
 function validate(teamData) {
