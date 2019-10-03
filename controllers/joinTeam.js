@@ -9,7 +9,11 @@ async function requestJoinTeam(requestData) {
 
 async function getTeamIdBySlug(slug) {
   const teamId = await Team.findOne({ slug: slug });
-  return teamId._id;
+  if (!teamId) {
+    return null;
+  } else {
+    return teamId._id;
+  }
 }
 
 async function checkIfManager(managerId) {
@@ -30,6 +34,16 @@ async function updateTeamMembers(teamInfo) {
   return [team, user];
 }
 
+async function checkIfTeamMember(teamId, userId) {
+  const team = await Team.findById({ _id: teamId }).find({members: userId});
+  return team;
+}
+
+async function checkDuplicateRequest(teamId, userId) {
+  const request = await JoinTeam.find({team: teamId, user: userId})
+  return request
+}
+
 async function getPendingRequest(slug) {
   const teamId = await getTeamIdBySlug(slug);
   const team = await JoinTeam.find({ team: teamId }).populate(
@@ -45,5 +59,7 @@ module.exports = {
   checkIfManager,
   updateTeamMembers,
   getPendingRequest,
-  removeRequest
+  removeRequest,
+  checkIfTeamMember,
+  checkDuplicateRequest
 };

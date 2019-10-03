@@ -6,7 +6,9 @@ const {
   checkIfManager,
   updateTeamMembers,
   getPendingRequest,
-  removeRequest
+  removeRequest,
+  checkIfTeamMember,
+  checkDuplicateRequest
 } = require("../controllers/joinTeam");
 
 const express = require("express");
@@ -32,7 +34,21 @@ router.post("/", auth, async (req, res) => {
   if (!teamId) {
     res.status(400).json({ message: "No team found with that slug" });
   }
-  // Creates new pending document in database
+
+  // Checks if it's a duplicate request
+  const dupRequest = await checkDuplicateRequest(teamId, req.user._id);
+  if (dupRequest.length > 0) {
+    return res.status(400).json({ message: "Duplicate request" });
+  }
+  //check if user is already part of the team requested to join
+  const team = await checkIfTeamMember(teamId, req.user._id);
+  if (team.length > 0) {
+    return res
+      .status(400)
+      .json({ message: "User is already part of the team" });
+  }
+
+  // Creates new pending document in database after all checks have past
   const request = await requestJoinTeam({
     team: teamId,
     user: req.user._id,
