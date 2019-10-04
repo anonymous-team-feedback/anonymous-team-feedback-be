@@ -36,6 +36,10 @@ router.get("/:id", auth, async (req, res) => {
 router.post("/", auth, async (req, res) => {
   const { error } = validateTeam(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+  const checkTeam = await findTeamBySlug(req.body.slug)
+  if (checkTeam) {
+    return res.status(400).json({message: 'Team already exists'})
+  }
   const team = await createTeam(req.body, req.user._id);
   await team.save();
   res.status(201).json(team);
