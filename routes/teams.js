@@ -25,7 +25,7 @@ router.get("/:slug", async (req, res) => {
   res.status(200).json(team);
 });
 
-router.get("/:id", auth, async (req, res) => {
+router.get("/u/:id", auth, async (req, res) => {
   const team = await findTeamByUser(req.params.id);
   if (!team) {
     res.status(400).json({ message: "No team found with provided member id" });
