@@ -23,6 +23,9 @@ async function findUserByEmail(userEmail) {
 async function findUserAndUpdate(user_id, data) {
   return await User.findByIdAndUpdate(user_id, data, { new: true });
 }
+async function findUser(_id) {
+  return await User.find({_id});
+}
 
 async function findUsers(email, userId) {
   const rgx = new RegExp(email, "ig");
@@ -38,5 +41,6 @@ module.exports = {
   createUser,
   deleteUser,
   findUserAndUpdate,
-  findUsers
+  findUsers,
+  findUser
 };
