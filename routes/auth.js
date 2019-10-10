@@ -56,15 +56,22 @@ router.post("/login", async (req, res) => {
   // Create token
   const token = generateAuthToken(_user._id);
 
+  let fullUser = await user.findUser(_user._id) // find all data associated with this user from the given key from the findbyemail method
+
   // Send response and token
-  res.header("x-auth-token", token).json({
-    firstName: _user.firstName,
-    lastName: _user.lastName,
-    email: _user.email,
-    jobTitle: _user.jobTitle,
-    _id: _user._id,
-    token: token
-  });
+  if(fullUser[0].approved){
+    res.header("x-auth-token", token).json(fullUser[0]);
+  }else{
+    res.header("x-auth-token", token).json({
+      firstName: fullUser[0].user.firstName,
+      lastName: fullUser[0].user.lastName,
+      email: fullUser[0].user.email,
+      jobTitle: fullUser[0].user.jobTitle,
+      _id: fullUser[0].user._id,
+      token: token,
+      approved: fullUser[0].approved
+    });
+  }
 });
 
 function validateLogin(req) {
