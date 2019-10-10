@@ -1,4 +1,5 @@
 const { User } = require('../models/users');
+const {JoinTeam} = require('../models/joinTeams')
 
 async function createUser(userData) {
   const user = new User({
@@ -23,8 +24,16 @@ async function findUserByEmail(userEmail) {
 async function findUserAndUpdate(user_id, data) {
   return await User.findByIdAndUpdate(user_id, data, { new: true });
 }
-async function findUser(_id) {
-  return await User.find({_id});
+async function findUser(userId) {
+  const user = await JoinTeam.find({ user: userId })
+  .populate(
+    "user",
+    "email firstName lastName jobTitle"
+  ).populate(
+    "team",
+    "name manager slug members"
+  )
+  return user
 }
 
 async function findUsers(email, userId) {
