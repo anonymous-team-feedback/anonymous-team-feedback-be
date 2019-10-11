@@ -59,9 +59,11 @@ router.post("/login", async (req, res) => {
   let fullUser = await user.findUser(_user._id) // find all data associated with this user from the given key from the findbyemail method
 
   // Send response and token
-  if(fullUser[0].approved){
-    res.header("x-auth-token", token).json(fullUser[0]);
-  }else{
+  if(fullUser.length === 0){
+    res.header("x-auth-token", token).json(_user);
+  }else {
+    fullUser[0].approved ? 
+    res.header("x-auth-token", token).json(fullUser[0]) :
     res.header("x-auth-token", token).json({
       firstName: fullUser[0].user.firstName,
       lastName: fullUser[0].user.lastName,
