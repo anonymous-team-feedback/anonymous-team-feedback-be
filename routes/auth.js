@@ -5,6 +5,7 @@ const user = require("../controllers/user");
 const express = require("express");
 const { validate } = require("../models/users.js");
 const router = express.Router();
+const joinTeam = require('../controllers/joinTeam')
 
 router.post("/register", async (req, res) => {
   // Validates request body
@@ -33,7 +34,7 @@ router.post("/register", async (req, res) => {
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,
-    jobtTitle: _user.jobTitle,
+    jobTitle: _user.jobTitle,
     _id: _user._id
   });
 });
@@ -57,9 +58,11 @@ router.post("/login", async (req, res) => {
   const token = generateAuthToken(_user._id);
 
   let newUser = await user.findUser(_user._id) // find all data associated with this user from the given key from the findbyemail method
+  let checked = await joinTeam.checkIfManager(_user._id)
+
   const fullUser = newUser[0]
   // Send response and token
-  if(Object.keys(fullUser).length < 7){
+  if(Object.keys(fullUser).length < 6){
     const {_id, firstName, lastName, email, jobTitle} = _user
     res.header("x-auth-token", token).json({
       _id,
@@ -73,8 +76,8 @@ router.post("/login", async (req, res) => {
   }else {
     const {firstName, lastName, email, jobTitle, _id} = fullUser.user
     fullUser.approved ? 
-    res.header("x-auth-token", token).json(fullUser) :
-    res.header("x-auth-token", token).json({
+    res.header("x-auth-token", token).json({...fullUser._doc,token, isManager: (checked.length>0)}) :
+    res.header("x-auth-token", token).json({user: {
       firstName,
       lastName,
       email,
@@ -82,7 +85,7 @@ router.post("/login", async (req, res) => {
       _id,
       token: token,
       approved: fullUser.approved
-    });
+    }});
   }
 });
 
