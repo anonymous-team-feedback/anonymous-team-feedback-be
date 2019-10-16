@@ -57,7 +57,8 @@ router.put("/", auth, async (req, res) => {
   }
 
   if (req.body.user.approved === false) {
-    const user = await joinTeam.removeRequest(req.body.user.user);
+    console.log(req.body)
+    const user = await joinTeam.removeRequest(req.body.request_id);
     const result = await joinTeam.updateTeamMembers(req.body.user);
     res.status(200).json(result[0]);
   }
