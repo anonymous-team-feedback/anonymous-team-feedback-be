@@ -35,7 +35,7 @@ router.post("/register", async (req, res) => {
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,
-    jobtTitle: _user.jobTitle,
+    jobTitle: _user.jobTitle,
     _id: _user._id
   });
 });
@@ -60,9 +60,6 @@ router.post("/login", async (req, res) => {
 
   const team = await Team.findTeamByUser(_user)
 
-
-  console.log(team)
-
     const {_id, firstName, lastName, email, jobTitle} = _user
     res.header("x-auth-token", token).json({
       _id,
@@ -71,7 +68,7 @@ router.post("/login", async (req, res) => {
       email,
       jobTitle,
       token,
-      team: team,
+      team: team
     });
 });
 
