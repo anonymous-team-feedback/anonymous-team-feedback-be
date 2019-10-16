@@ -1,6 +1,6 @@
 const { User } = require('../models/users');
 const {JoinTeam} = require('../models/joinTeams')
-const Team = require('../controllers/teams')
+const teams = require('../controllers/teams')
 
 async function createUser(userData) {
   const user = new User({
@@ -29,8 +29,7 @@ async function findUserAndUpdate(user_id, data) {
 
 async function findUser(userId) {
  const _user = await User.findById(userId)
- const team = await Team.findTeamByUser(_user)
-
+ const team = await teams.findTeamByUser(_user)
  const fullUser = team ? 
  {user: {..._user._doc}, team: {...team._doc}} :
   {user: {..._user._doc}}
