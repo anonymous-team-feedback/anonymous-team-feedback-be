@@ -30,7 +30,12 @@ async function findUserAndUpdate(user_id, data) {
 async function findUser(userId) {
  const _user = await User.findById(userId)
  const team = await Team.findTeamByUser(_user)
- const fullUser = {user: {..._user._doc}, team: {...team._doc}}
+
+ const fullUser = team ? 
+ {user: {..._user._doc}, team: {...team._doc}} :
+  {user: {..._user._doc}}
+
+
  return fullUser
 }
 
