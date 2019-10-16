@@ -21,7 +21,7 @@ async function checkIfManager(managerId) {
 }
 
 async function removeRequest(userId) {
-  const user = await JoinTeam.findOneAndRemove({ user: userId });
+  const user = await JoinTeam.findByIdAndRemove(userId);
   return user;
 }
 
@@ -30,8 +30,7 @@ async function updateTeamMembers(teamInfo) {
     { slug: teamInfo.slug },
     { $push: { members: teamInfo.user } }
   );
-  const user = await JoinTeam.findOneAndRemove({ user: teamInfo.user });
-  return [team, user];
+  return [team];
 }
 
 async function checkIfTeamMember(teamId, userId) {
