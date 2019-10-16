@@ -5,6 +5,8 @@ const user = require("../controllers/user");
 const express = require("express");
 const { validate } = require("../models/users.js");
 const router = express.Router();
+const joinTeam = require('../controllers/joinTeam')
+const Team = require('../controllers/teams')
 
 router.post("/register", async (req, res) => {
   // Validates request body
@@ -56,10 +58,11 @@ router.post("/login", async (req, res) => {
   // Create token
   const token = generateAuthToken(_user._id);
 
-  let newUser = await user.findUser(_user._id) // find all data associated with this user from the given key from the findbyemail method
-  const fullUser = newUser[0]
-  // Send response and token
-  if(Object.keys(fullUser).length < 7){
+  const team = await Team.findTeamByUser(_user)
+
+
+  console.log(team)
+
     const {_id, firstName, lastName, email, jobTitle} = _user
     res.header("x-auth-token", token).json({
       _id,
@@ -68,22 +71,8 @@ router.post("/login", async (req, res) => {
       email,
       jobTitle,
       token,
-      approved: false
+      team: team,
     });
-  }else {
-    const {firstName, lastName, email, jobTitle, _id} = fullUser.user
-    fullUser.approved ? 
-    res.header("x-auth-token", token).json(fullUser) :
-    res.header("x-auth-token", token).json({
-      firstName,
-      lastName,
-      email,
-      jobTitle,
-      _id,
-      token: token,
-      approved: fullUser.approved
-    });
-  }
 });
 
 function validateLogin(req) {

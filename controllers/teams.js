@@ -27,8 +27,8 @@ async function findTeamBySlug(slug) {
   return await Team.findOne({slug})
 }
 
-async function findTeamByUser(userId) {
-  return await Team.findOne({ members: userId });
+async function findTeamByUser(user) {
+  return await Team.findOne({ members: {$in: [user]} });
 }
 
 async function updateTeamBySlug(slug, updateTeam) {
