@@ -49,25 +49,20 @@ router.post("/", auth, async (req, res) => {
 });
 
 router.put("/", auth, async (req, res) => {
-  const { error } = validateUpdate(req.body);
+  const { error } = validateUpdate(req.body.user);
   if (error) return res.status(400).send(error.details[0].message);
-  const manager = await joinTeam.checkIfManager(req.user_id);
-  if (!manager) {
+  const manager = await joinTeam.checkIfManager(req.body.user_id);
+  if (manager.length<1) {
     res.status(401).json({ message: "You are not the authorizing manager" });
   }
 
-  if (req.body.approved === "false") {
-    const user = await joinTeam.removeRequest(req.body.user);
-    if (!user) {
-      res.status(400).json({ message: "No request was found" });
-    }
-    res
-      .status(200)
-      .json({ message: "User has been removed from pending list" });
+  if (req.body.user.approved === false) {
+    console.log(req.body)
+    const user = await joinTeam.removeRequest(req.body.request_id);
+    const result = await joinTeam.updateTeamMembers(req.body.user);
+    res.status(200).json(result[0]);
   }
 
-  const result = await joinTeam.updateTeamMembers(req.body);
-  res.status(200).json(result[0]);
 });
 
 function validate(teamData) {

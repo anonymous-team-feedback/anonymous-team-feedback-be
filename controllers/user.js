@@ -1,5 +1,6 @@
 const { User } = require('../models/users');
 const {JoinTeam} = require('../models/joinTeams')
+const teams = require('../controllers/teams')
 
 async function createUser(userData) {
   const user = new User({
@@ -25,28 +26,16 @@ async function findUserAndUpdate(user_id, data) {
   return await User.findByIdAndUpdate(user_id, data, { new: true });
 }
 
-// finds a user from the jointeams collection by userid 
-// and merges it with the user and team information
-// - if no jointeams collection, it returns just the user base information
+
 async function findUser(userId) {
-  const collection = await JoinTeam.find({ user: userId })
-  if(collection.length > 0){ // if the collection is there, should be == 1
-    //theres gotta be a better way
-    // - i dont like querying the same thing twice. But its
-    // all i can come up with as of now. Feel free to change!!
-    const wholeUser = await JoinTeam.find({user: userId}).populate(
-      "user",
-      "email firstName lastName jobTitle"
-    ).populate(
-      "team",
-      "name manager slug members"
-    )
-    return wholeUser
-  }
-  else{ // if the collection  is absent, should be == 0
-    const baseUser = await User.find({_id: userId})
-    return baseUser
-  }
+ const _user = await User.findById(userId)
+ const team = await teams.findTeamByUser(_user)
+ const fullUser = team ? 
+ {user: {..._user._doc}, team: {...team._doc}} :
+  {user: {..._user._doc}}
+
+
+ return fullUser
 }
 
 async function findUsers(email, userId) {

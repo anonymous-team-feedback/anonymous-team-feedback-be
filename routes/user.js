@@ -16,9 +16,8 @@ router.put("/:id", auth, async (req, res) => {
 
 router.get('/:id', auth, async(req, res) => {
   if(req.user._id === req.params.id){
-    user.findUser(req.params.id)
-    .then(user => res.status(200).json(user[0]))
-    .catch(err => res.status(500).json({error: 'Internal server error: Check your id'}))
+    const _user = await user.findUser(req.params.id)
+   res.status(200).json(_user)
   }
 })
 module.exports = router;
