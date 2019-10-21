@@ -6,7 +6,8 @@ const {
   updateTeamBySlug,
   findTeamBySlug,
   findTeamByUser,
-  deleteTeamBySlug
+  deleteTeamBySlug,
+  findTeamMembers
 } = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
@@ -19,6 +20,15 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/:slug", async (req, res) => {
   const team = await findTeamBySlug(req.params.slug);
+  if (!team) {
+    res.status(400).json({ message: "No team found with provided id" });
+  }
+  res.status(200).json(team);
+});
+
+// Returns team and team members email, job title, first & last name
+router.get("/members/:slug", async (req, res) => {
+  const team = await findTeamMembers(req.params.slug);
   if (!team) {
     res.status(400).json({ message: "No team found with provided id" });
   }
