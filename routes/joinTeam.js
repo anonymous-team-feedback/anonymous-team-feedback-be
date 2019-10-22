@@ -65,6 +65,14 @@ router.put("/", auth, async (req, res) => {
 
 });
 
+router.delete('/removeuser/:id', auth, async (req, res) => {
+ const request = await joinTeam.removeRequest(req.params.id)
+ if(request){
+   res.send(request)
+ }
+  res.status(400).json({error: 'No request with that id'})
+})
+
 function validate(teamData) {
   const schema = {
     slug: Joi.string().required()
