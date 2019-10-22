@@ -20,9 +20,9 @@ async function checkIfManager(managerId) {
   return await Team.find({ manager: managerId });
 }
 
-async function removeRequest(userId) {
-  const user = await JoinTeam.findByIdAndRemove(userId);
-  return user;
+async function removeRequest(requestId) {
+  const request = await JoinTeam.findByIdAndRemove(requestId);
+  return request;
 }
 
 async function updateTeamMembers(teamInfo) {
