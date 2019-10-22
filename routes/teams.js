@@ -30,7 +30,7 @@ router.get("/:slug", async (req, res) => {
 router.get("/members/:slug", async (req, res) => {
   const team = await findTeamMembers(req.params.slug);
   if (!team) {
-    res.status(400).json({ message: "No team found with provided id" });
+    res.status(400).json({ message: "No team found with provided slug" });
   }
   res.status(200).json(team);
 });
