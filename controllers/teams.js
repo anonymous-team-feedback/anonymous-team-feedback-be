@@ -28,10 +28,12 @@ async function findTeamBySlug(slug) {
   return await Team.findOne({slug})
 }
 async function findTeamMembers(slug) {
-  return await Team.findOne({slug}).populate(
-    "user",
-    "email firstName lastName jobTitle"
-  );
+  const team = await Team
+  .findOne({slug})
+  .populate(
+    'members',
+     'firstName lastName jobTitle email')
+  return team
 }
 
 async function findTeamByUser(userId) {
