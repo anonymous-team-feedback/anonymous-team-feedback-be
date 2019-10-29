@@ -5,6 +5,8 @@ const user = require("../controllers/user");
 const express = require("express");
 const { validate } = require("../models/users.js");
 const router = express.Router();
+const joinTeam = require('../controllers/joinTeam')
+const Team = require('../controllers/teams')
 
 router.post("/register", async (req, res) => {
   // Validates request body
@@ -33,7 +35,7 @@ router.post("/register", async (req, res) => {
     firstName: _user.firstName,
     lastName: _user.lastName,
     email: _user.email,
-    jobtTitle: _user.jobTitle,
+    jobTitle: _user.jobTitle,
     _id: _user._id
   });
 });
@@ -56,15 +58,18 @@ router.post("/login", async (req, res) => {
   // Create token
   const token = generateAuthToken(_user._id);
 
-  // Send response and token
-  res.header("x-auth-token", token).json({
-    firstName: _user.firstName,
-    lastName: _user.lastName,
-    email: _user.email,
-    jobTitle: _user.jobTitle,
-    _id: _user._id,
-    token: token
-  });
+  const team = await Team.findTeamByUser(_user)
+
+    const {_id, firstName, lastName, email, jobTitle} = _user
+    res.header("x-auth-token", token).json({
+      _id,
+      firstName,
+      lastName,
+      email,
+      jobTitle,
+      token,
+      team: team
+    });
 });
 
 function validateLogin(req) {

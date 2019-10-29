@@ -5,7 +5,9 @@ const {
   getTeam,
   updateTeamBySlug,
   findTeamBySlug,
-  deleteTeamBySlug
+  findTeamByUser,
+  deleteTeamBySlug,
+  findTeamMembers
 } = require("../controllers/teams");
 const express = require("express");
 const router = express.Router();
@@ -24,9 +26,30 @@ router.get("/:slug", async (req, res) => {
   res.status(200).json(team);
 });
 
+// Returns team and team members email, job title, first & last name
+router.get("/members/:slug", async (req, res) => {
+  const team = await findTeamMembers(req.params.slug);
+  if (!team) {
+    res.status(400).json({ message: "No team found with provided slug" });
+  }
+  res.status(200).json(team);
+});
+
+router.get("/u/:id", auth, async (req, res) => {
+  const team = await findTeamByUser(req.params.id);
+  if (!team) {
+    res.status(400).json({ message: "No team found with provided member id" });
+  }
+  res.status(200).json(team);
+})
+
 router.post("/", auth, async (req, res) => {
   const { error } = validateTeam(req.body);
   if (error) return res.status(400).send(error.details[0].message);
+  const checkTeam = await findTeamBySlug(req.body.slug)
+  if (checkTeam) {
+    return res.status(400).json({message: 'Team already exists'})
+  }
   const team = await createTeam(req.body, req.user._id);
   await team.save();
   res.status(201).json(team);

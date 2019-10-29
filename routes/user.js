@@ -14,4 +14,10 @@ router.put("/:id", auth, async (req, res) => {
   res.status(201).json(updatedUser);
 })
 
+router.get('/:id', auth, async(req, res) => {
+  if(req.user._id === req.params.id){
+    const _user = await user.findUser(req.params.id)
+   res.status(200).json(_user)
+  }
+})
 module.exports = router;

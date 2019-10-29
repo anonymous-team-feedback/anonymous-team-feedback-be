@@ -5,7 +5,9 @@ module.exports = {
   getTeam,
   updateTeamBySlug,
   findTeamBySlug,
-  deleteTeamBySlug
+  findTeamByUser,
+  deleteTeamBySlug,
+  findTeamMembers
 };
 
 async function getTeam(managerId) {
@@ -16,13 +18,26 @@ async function createTeam(teamInfo, managerId) {
   const team = new Team({
     name: teamInfo.name,
     manager: managerId,
-    slug: teamInfo.slug
+    slug: teamInfo.slug,
+    members: [ managerId ]
   });
   return await team.save();
 }
 
 async function findTeamBySlug(slug) {
   return await Team.findOne({slug})
+}
+async function findTeamMembers(slug) {
+  const team = await Team
+  .findOne({slug})
+  .populate(
+    'members',
+     'firstName lastName jobTitle email')
+  return team
+}
+
+async function findTeamByUser(userId) {
+  return await Team.findOne({ members: userId });
 }
 
 async function updateTeamBySlug(slug, updateTeam) {
